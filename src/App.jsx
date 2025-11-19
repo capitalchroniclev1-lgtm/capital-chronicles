@@ -502,26 +502,30 @@ const ContactDropdown = ({ isOpen, onClose, buttonRef }) => {
 
 const Header = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const buttonRef = useRef(null);
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-[#064F3B]/90 via-[#0A6A52]/90 to-[#064F3B]/90 backdrop-blur-lg border-b border-white/10 shadow-lg">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <div className="flex items-center">
-            <a href="/" className="flex items-center space-x-3 focus:outline-none focus:ring-2 focus:ring-[#D6A645] rounded-sm">
-              <img src="/logo.png" alt="Capital Chronicles Logo" className="h-10 w-10" />
-              <span className="text-[#F5F7F4] text-xl font-bold">Capital Chronicles</span>
+          {/* Logo */}
+          <div className="flex items-center flex-shrink-0">
+            <a href="/" className="flex items-center space-x-2 sm:space-x-3 focus:outline-none focus:ring-2 focus:ring-[#D6A645] rounded-sm">
+              <img src="/logo.png" alt="Capital Chronicles Logo" className="h-8 w-8 sm:h-10 sm:w-10" />
+              <span className="text-[#F5F7F4] text-base sm:text-xl font-bold">Capital Chronicles</span>
             </a>
           </div>
-          <div className="hidden md:flex items-center space-x-8">
-            <a href="#features" className="text-[#F5F7F4] hover:text-[#D6A645] transition-all duration-300">Solutions</a>
-            <a href="#process" className="text-[#F5F7F4] hover:text-[#D6A645] transition-all duration-300">Process</a>
-            <a href="#testimonials" className="text-[#F5F7F4] hover:text-[#D6A645] transition-all duration-300">Case Studies</a>
+
+          {/* Desktop Navigation */}
+          <div className="hidden lg:flex items-center space-x-6 xl:space-x-8">
+            <a href="#features" className="text-[#F5F7F4] hover:text-[#D6A645] transition-all duration-300 text-sm xl:text-base">Solutions</a>
+            <a href="#process" className="text-[#F5F7F4] hover:text-[#D6A645] transition-all duration-300 text-sm xl:text-base">Process</a>
+            <a href="#testimonials" className="text-[#F5F7F4] hover:text-[#D6A645] transition-all duration-300 text-sm xl:text-base">Case Studies</a>
             <button
               ref={buttonRef}
               onClick={() => setDropdownOpen(!dropdownOpen)}
-              className="bg-gradient-to-r from-[#D6A645] to-[#C19534] text-[#1A1F23] px-4 py-2 rounded-sm font-medium hover:shadow-lg hover:shadow-[#D6A645]/30 transition-all duration-300"
+              className="bg-gradient-to-r from-[#D6A645] to-[#C19534] text-[#1A1F23] px-4 py-2 rounded-sm font-medium hover:shadow-lg hover:shadow-[#D6A645]/30 transition-all duration-300 text-sm xl:text-base whitespace-nowrap"
               aria-expanded={dropdownOpen}
               aria-controls="contact-dropdown"
               aria-haspopup="dialog"
@@ -529,7 +533,65 @@ const Header = () => {
               Contact Us
             </button>
           </div>
+
+          {/* Mobile Menu Button */}
+          <div className="lg:hidden">
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="text-[#F5F7F4] hover:text-[#D6A645] transition-colors p-2"
+              aria-label="Toggle menu"
+              aria-expanded={mobileMenuOpen}
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {mobileMenuOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                )}
+              </svg>
+            </button>
+          </div>
         </div>
+
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="lg:hidden border-t border-white/10 py-4 space-y-3">
+            <a 
+              href="#features" 
+              onClick={() => setMobileMenuOpen(false)}
+              className="block text-[#F5F7F4] hover:text-[#D6A645] transition-all duration-300 py-2"
+            >
+              Solutions
+            </a>
+            <a 
+              href="#process" 
+              onClick={() => setMobileMenuOpen(false)}
+              className="block text-[#F5F7F4] hover:text-[#D6A645] transition-all duration-300 py-2"
+            >
+              Process
+            </a>
+            <a 
+              href="#testimonials" 
+              onClick={() => setMobileMenuOpen(false)}
+              className="block text-[#F5F7F4] hover:text-[#D6A645] transition-all duration-300 py-2"
+            >
+              Case Studies
+            </a>
+            <button
+              ref={buttonRef}
+              onClick={() => {
+                setDropdownOpen(!dropdownOpen);
+                setMobileMenuOpen(false);
+              }}
+              className="w-full bg-gradient-to-r from-[#D6A645] to-[#C19534] text-[#1A1F23] px-4 py-3 rounded-sm font-medium hover:shadow-lg hover:shadow-[#D6A645]/30 transition-all duration-300 text-center"
+              aria-expanded={dropdownOpen}
+              aria-controls="contact-dropdown"
+              aria-haspopup="dialog"
+            >
+              Contact Us
+            </button>
+          </div>
+        )}
       </nav>
       <ContactDropdown isOpen={dropdownOpen} onClose={() => setDropdownOpen(false)} buttonRef={buttonRef} />
     </header>
@@ -985,13 +1047,16 @@ const CTAStrip = () => (
 const Footer = () => (
   <footer className="bg-[#064F3B] pt-16 pb-8 px-4 sm:px-6 lg:px-8 border-t border-[#D6A645] border-opacity-30">
     <div className="max-w-[1100px] mx-auto">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-        <div className="md:col-span-1 flex flex-col items-center md:items-start text-center md:text-left">
+      {/* Main Footer Content */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 mb-12">
+        
+        {/* Company Info - Full width on mobile, spans across on tablet */}
+        <div className="sm:col-span-2 lg:col-span-1 flex flex-col items-center sm:items-start text-center sm:text-left">
           <div className="flex items-center space-x-3 mb-4">
             <img src="/logo.png" alt="Capital Chronicles Logo" className="h-8 w-8" />
             <h3 className="text-[#F5F7F4] text-xl font-bold">Capital Chronicles</h3>
           </div>
-          <p className="text-[#F5F7F4] text-opacity-80 mb-6 leading-relaxed">
+          <p className="text-[#F5F7F4] text-opacity-80 mb-6 leading-relaxed max-w-xs">
             Strategic investment and AI-driven innovation for sustainable business growth.
           </p>
           <div className="flex space-x-4">
@@ -1007,40 +1072,43 @@ const Footer = () => (
           </div>
         </div>
 
-        <div className="text-center md:text-left">
-          <h4 className="text-[#F5F7F4] font-semibold mb-4">Solutions</h4>
+        {/* Solutions */}
+        <div className="text-center sm:text-left">
+          <h4 className="text-[#F5F7F4] font-semibold mb-4 text-base sm:text-lg">Solutions</h4>
           <ul className="space-y-3">
-            <li><a href="#ai-automation" className="text-[#F5F7F4] text-opacity-80 hover:text-[#D6A645] transition-colors">AI Automation</a></li>
-            <li><a href="#innovation" className="text-[#F5F7F4] text-opacity-80 hover:text-[#D6A645] transition-colors">Innovation Engineering</a></li>
-            <li><a href="#investment" className="text-[#F5F7F4] text-opacity-80 hover:text-[#D6A645] transition-colors">Strategic Investment</a></li>
-            <li><a href="#growth" className="text-[#F5F7F4] text-opacity-80 hover:text-[#D6A645] transition-colors">Digital Growth</a></li>
+            <li><a href="#ai-automation" className="text-[#F5F7F4] text-opacity-80 hover:text-[#D6A645] transition-colors text-sm sm:text-base">AI Automation</a></li>
+            <li><a href="#innovation" className="text-[#F5F7F4] text-opacity-80 hover:text-[#D6A645] transition-colors text-sm sm:text-base">Innovation Engineering</a></li>
+            <li><a href="#investment" className="text-[#F5F7F4] text-opacity-80 hover:text-[#D6A645] transition-colors text-sm sm:text-base">Strategic Investment</a></li>
+            <li><a href="#growth" className="text-[#F5F7F4] text-opacity-80 hover:text-[#D6A645] transition-colors text-sm sm:text-base">Digital Growth</a></li>
           </ul>
         </div>
 
-        <div className="text-center md:text-left">
-          <h4 className="text-[#F5F7F4] font-semibold mb-4">Company</h4>
+        {/* Company */}
+        <div className="text-center sm:text-left">
+          <h4 className="text-[#F5F7F4] font-semibold mb-4 text-base sm:text-lg">Company</h4>
           <ul className="space-y-3">
-            <li><a href="#about" className="text-[#F5F7F4] text-opacity-80 hover:text-[#D6A645] transition-colors">About Us</a></li>
-            <li><a href="#testimonials" className="text-[#F5F7F4] text-opacity-80 hover:text-[#D6A645] transition-colors">Case Studies</a></li>
-            <li><a href="#careers" className="text-[#F5F7F4] text-opacity-80 hover:text-[#D6A645] transition-colors">Careers</a></li>
-            <li><a href="#contact" className="text-[#F5F7F4] text-opacity-80 hover:text-[#D6A645] transition-colors">Contact</a></li>
+            <li><a href="#about" className="text-[#F5F7F4] text-opacity-80 hover:text-[#D6A645] transition-colors text-sm sm:text-base">About Us</a></li>
+            <li><a href="#testimonials" className="text-[#F5F7F4] text-opacity-80 hover:text-[#D6A645] transition-colors text-sm sm:text-base">Case Studies</a></li>
+            <li><a href="#careers" className="text-[#F5F7F4] text-opacity-80 hover:text-[#D6A645] transition-colors text-sm sm:text-base">Careers</a></li>
+            <li><a href="#contact" className="text-[#F5F7F4] text-opacity-80 hover:text-[#D6A645] transition-colors text-sm sm:text-base">Contact</a></li>
           </ul>
         </div>
 
-        <div className="text-center md:text-left">
-          <h4 className="text-[#F5F7F4] font-semibold mb-4">Stay Updated</h4>
-          <p className="text-[#F5F7F4] text-opacity-80 mb-4 text-sm">
+        {/* Newsletter */}
+        <div className="text-center sm:text-left sm:col-span-2 lg:col-span-1">
+          <h4 className="text-[#F5F7F4] font-semibold mb-4 text-base sm:text-lg">Stay Updated</h4>
+          <p className="text-[#F5F7F4] text-opacity-80 mb-4 text-xs sm:text-sm">
             Subscribe to insights on AI, investment, and growth strategy.
           </p>
-          <form className="flex flex-col sm:flex-row gap-2">
+          <form className="flex flex-col gap-2 max-w-sm mx-auto sm:mx-0">
             <input
               type="email"
               placeholder="Your email"
-              className="flex-1 px-4 py-2 bg-[#1A1F23] text-[#F5F7F4] border border-[#D6A645] border-opacity-30 rounded-sm focus:outline-none focus:ring-2 focus:ring-[#D6A645] placeholder-[#F5F7F4] placeholder-opacity-50"
+              className="w-full px-4 py-2 bg-[#1A1F23] text-[#F5F7F4] border border-[#D6A645] border-opacity-30 rounded-sm focus:outline-none focus:ring-2 focus:ring-[#D6A645] placeholder-[#F5F7F4] placeholder-opacity-50 text-sm"
             />
             <button
               type="submit"
-              className="bg-[#D6A645] text-[#1A1F23] px-4 py-2 rounded-sm font-semibold hover:bg-[#C19534] transition-colors whitespace-nowrap"
+              className="w-full bg-[#D6A645] text-[#1A1F23] px-4 py-2 rounded-sm font-semibold hover:bg-[#C19534] transition-colors text-sm"
             >
               Subscribe
             </button>
@@ -1048,11 +1116,12 @@ const Footer = () => (
         </div>
       </div>
 
+      {/* Bottom Bar */}
       <div className="pt-8 border-t border-[#D6A645] border-opacity-30 flex flex-col sm:flex-row justify-between items-center gap-4">
-        <p className="text-[#F5F7F4] text-opacity-70 text-sm">
+        <p className="text-[#F5F7F4] text-opacity-70 text-xs sm:text-sm text-center sm:text-left">
           © 2025 Capital Chronicles. All rights reserved.
         </p>
-        <div className="flex flex-wrap gap-6 text-sm justify-center">
+        <div className="flex flex-wrap gap-4 sm:gap-6 text-xs sm:text-sm justify-center">
           <a href="#privacy" className="text-[#F5F7F4] text-opacity-70 hover:text-[#D6A645] transition-colors">Privacy Policy</a>
           <a href="#terms" className="text-[#F5F7F4] text-opacity-70 hover:text-[#D6A645] transition-colors">Terms of Service</a>
           <a href="#legal" className="text-[#F5F7F4] text-opacity-70 hover:text-[#D6A645] transition-colors">Legal</a>
