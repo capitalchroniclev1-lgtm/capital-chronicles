@@ -510,7 +510,7 @@ const Header = () => {
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
             <a href="/" className="flex items-center space-x-3 focus:outline-none focus:ring-2 focus:ring-[#D6A645] rounded-sm">
-              <img src="./public/logo.png" alt="Capital Chronicles Logo" className="h-10 w-10" />
+              <img src="/logo.png" alt="Capital Chronicles Logo" className="h-10 w-10" />
               <span className="text-[#F5F7F4] text-xl font-bold">Capital Chronicles</span>
             </a>
           </div>
@@ -988,7 +988,7 @@ const Footer = () => (
       <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
         <div className="md:col-span-1 flex flex-col items-center md:items-start text-center md:text-left">
           <div className="flex items-center space-x-3 mb-4">
-            <img src="./public/logo.png" alt="Capital Chronicles Logo" className="h-8 w-8" />
+            <img src="/logo.png" alt="Capital Chronicles Logo" className="h-8 w-8" />
             <h3 className="text-[#F5F7F4] text-xl font-bold">Capital Chronicles</h3>
           </div>
           <p className="text-[#F5F7F4] text-opacity-80 mb-6 leading-relaxed">
