@@ -175,52 +175,55 @@ const ContactDropdown = ({ isOpen, onClose, buttonRef }) => {
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const newErrors = formType === 'company' ? validateCompanyForm() : validateIndividualForm();
-    setErrors(newErrors);
+  // Find the handleSubmit function in your ContactDropdown component (around line 118-165)
+// Replace the entire handleSubmit function with this updated version:
 
-    if (Object.keys(newErrors).length === 0) {
-      setStatus('loading');
+const handleSubmit = (e) => {
+  e.preventDefault();
+  const newErrors = formType === 'company' ? validateCompanyForm() : validateIndividualForm();
+  setErrors(newErrors);
 
-      const emailData = formType === 'company' ? {
-        form_type: 'Company',
-        name: formData.contactName,
-        email: formData.email,
-        company: formData.companyName,
-        message: formData.needs,
-        reply_to: formData.email
-      } : {
-        form_type: 'Individual',
-        name: formData.fullName,
-        dob: formData.dob,
-        phone: formData.phone,
-        email: formData.individualEmail,
-        address: formData.address,
-        message: formData.reason,
-        reply_to: formData.individualEmail
-      };
+  if (Object.keys(newErrors).length === 0) {
+    setStatus('loading');
 
-      emailjs.send(
-        'service_nt80wfd',
-        'template_92o58re',
-        emailData,
-        'NwavJ2x1tirk1P3Ad'
-      )
-      .then(() => {
-        setStatus('success');
-        setFormData({
-          contactName: '', email: '', companyName: '', needs: '',
-          fullName: '', dob: '', phone: '', individualEmail: '', address: '', reason: ''
-        });
-      })
-      .catch((error) => {
-        console.error('Email send failed:', error);
-        setStatus('error');
+    // Determine which template to use based on form type
+    const templateId = formType === 'company' ? 'template_pazw4q8' : 'template_92o58re';
+
+    const emailData = formType === 'company' ? {
+      name: formData.contactName,
+      email: formData.email,
+      company: formData.companyName,
+      message: formData.needs,
+      reply_to: formData.email
+    } : {
+      name: formData.fullName,
+      dob: formData.dob,
+      phone: formData.phone,
+      email: formData.individualEmail,
+      address: formData.address,
+      message: formData.reason,
+      reply_to: formData.individualEmail
+    };
+
+    emailjs.send(
+      'service_nt80wfd',
+      templateId,  // Now uses dynamic template ID
+      emailData,
+      'NwavJ2x1tirk1P3Ad'
+    )
+    .then(() => {
+      setStatus('success');
+      setFormData({
+        contactName: '', email: '', companyName: '', needs: '',
+        fullName: '', dob: '', phone: '', individualEmail: '', address: '', reason: ''
       });
-    }
-  };
-
+    })
+    .catch((error) => {
+      console.error('Email send failed:', error);
+      setStatus('error');
+    });
+  }
+};
   if (!isOpen) return null;
 
   if (status === 'success') {
